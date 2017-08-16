@@ -26,7 +26,7 @@ class Db
 
     // require 'Db.php';
     $db = Db::getInstance(); //
-    $q = $db->query("SELECT * FROM products"); // select query corrected for example
+    $q = $db->query("SELECT * FROM products"); // deleted comments
 
 
     while($row = $q->fetch_assoc()) {
