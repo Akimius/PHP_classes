@@ -26,7 +26,7 @@ class Db
 
     // require 'Db.php';
     $db = Db::getInstance(); //
-    $q = $db->query('SELCT * FROM products');
+    $q = $db->query("SELECT * FROM products");
 
     while($row = $q->fetch_assoc()) {
         echo "id: " . $row["id"]. " - Name: " . $row["title"]. " " . $row["description"]. "<br>";
