@@ -1,58 +1,35 @@
 <?php
 
-abstract class Continent
+class Db
 {
-    public $name = ''; // name of the Continent
+    private static $instance  = null; // should be static
+    private $connection;
 
-    public $length = ''; // length of the Continent
-    public $width = ''; // width of the Continent
-    public $population = '';
-
-    public function getName(){
-        return $this->name;
+    public static function getInstance () {
+        if (is_null(self::$instance)) {
+            self::$instance = new self ();
+        }
+        return self::$instance;
+    }
+    //
+    private function __construct(){
+        $this->connection = new mysqli('localhost', 'root', '', 'jsstore_db');
     }
 
-    public function setName($name){
-        return $this->name = $name;
+    private function __clone(){
     }
 
-    abstract public function getFootage ($length, $width); // Footage is length * width
-    abstract public function setPopulation ($population); // sets population in mln
-}
-
-class Country extends Continent
-{
-    public $capital = 'not set capital'; // Only in Countries
-
-    public function getCapital(){
-        return $this->capital;
-    }
-
-    public function setCapital($capital){
-        return $this->capital = $capital;
-    }
-
-    function __construct($population)
-    {
-        $this->population = $population;
-    }
-
-    public function getFootage ($length, $width) {
-        return $length * $width; // from Continents
-    }
-    public function setPopulation ($population) {
-        $this->population = $population;
+    public function query($sql) {
+        return $this->connection->query($sql);
     }
 }
 
-    $australia = new Country(24);
-    $australia->capital = 'Canberra';
-    echo $australia->getCapital() . '<hr>';
-    echo $australia->population . '<hr>';
+    // require 'Db.php';
+    $db = Db::getInstance(); //
+    $q = $db->query('SELCT * FROM products');
 
-    $australia->setCapital('Dnipro');
-    echo $australia->getCapital();
-    echo '<hr>';
-    echo $australia->getFootage(100, 200);
+    while($row = $q->fetch_assoc()) {
+        echo "id: " . $row["id"]. " - Name: " . $row["title"]. " " . $row["description"]. "<br>";
+    }
 
 
